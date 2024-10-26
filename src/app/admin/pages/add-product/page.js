@@ -505,7 +505,7 @@ const missingFields = requiredFields
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1 mt-4">Meta Title</label>
           <input
             type="text"
             value={newProduct.meta_title}
