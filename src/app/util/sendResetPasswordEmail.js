@@ -5,8 +5,8 @@ export async function sendResetPasswordEmail(email, token) {
     const transporter = nodemailer.createTransport({
       service: 'gmail', // Using Gmail's service
       auth: {
-        user: process.env.EMAIL_USERNAME, // Your Gmail email address
-        pass: process.env.EMAIL_PASSWORD, // Your Gmail app password (not your regular Gmail password)
+        user: process.env.NEXT_PUBLIC_EMAIL_USERNAME, // Your Gmail email address
+        pass: process.env.NEXT_PUBLIC_EMAIL_PASSWORD, // Your Gmail app password (not your regular Gmail password)
       },
     });
     // const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ export async function sendResetPasswordEmail(email, token) {
     // });
 
     const mailOptions = {
-      from: process.env.MAIL_USER,
+      from: process.env.NEXT_PUBLIC_EMAIL_USERNAME,
       to: email,
       subject: 'Password Reset',
       text: `You requested a password reset. Please reset your password by clicking the following link: ${process.env.BASE_URL}/customer/pages/reset?token=${token}`,

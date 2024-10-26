@@ -5,8 +5,8 @@ export async function sendVerificationEmail(email, token) {
     const transporter = nodemailer.createTransport({
       service: 'gmail', // Using Gmail's service
       auth: {
-        user: process.env.EMAIL_USERNAME, // Your Gmail email address
-        pass: process.env.EMAIL_PASSWORD, // Your Gmail app password (not your regular Gmail password)
+        user: process.env.NEXT_PUBLIC_EMAIL_USERNAME, // Your Gmail email address
+        pass: process.env.NEXT_PUBLIC_EMAIL_PASSWORD, // Your Gmail app password (not your regular Gmail password)
       },
     });
     // const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ export async function sendVerificationEmail(email, token) {
     // });
 
     const mailOptions = {
-      from: process.env.MAIL_USER,
+      from: process.env.NEXT_PUBLIC_EMAIL_USERNAME,
       to: email,
       subject: 'Email Verification',
       text: `Please verify your email by clicking the following link: https://www.murshadpk.com/customer/pages/verify?token=${token}`,

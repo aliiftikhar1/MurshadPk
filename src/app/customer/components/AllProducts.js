@@ -87,7 +87,7 @@ const TopRatedProducts = () => {
                 {product.images && product.images.length > 0 ? (
                   <div className='h-[240px] md:h-[220px] overflow-hidden'>
                   <motion.img
-                  src={`${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${product.images[0]}`}
+                  src={`${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${product.images[0].url}`}
                     alt={product.name}
                     className="h-[240px md:h-[220px] w-full object-cover mb-4 rounded bg-white "
                     whileHover={{ scale: 1.1 }}
