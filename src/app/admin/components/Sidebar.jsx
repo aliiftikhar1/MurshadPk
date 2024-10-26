@@ -401,7 +401,7 @@ const Sidebar = ({ setActiveComponent }) => {
               </ul>
             )}
           </li>
-          <li>
+          {/* <li>
           <a href='/admin/pages/addContactInfo'>
             <button
               className="flex items-center w-full p-2 hover:bg-blue-700 rounded focus:outline-none"
@@ -420,7 +420,7 @@ const Sidebar = ({ setActiveComponent }) => {
               <span className="ml-2">Company Details</span>
             </button>
             </a>
-          </li>
+          </li> */}
           
           <li>
             <button
