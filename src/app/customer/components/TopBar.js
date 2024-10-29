@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { FiChevronRight, FiPhone, FiFacebook, FiInstagram } from 'react-icons/fi';
-import { FaTiktok, FaPinterest } from 'react-icons/fa'; // Import Pinterest icon
+import { FaTiktok, FaPinterest, FaLinkedin } from 'react-icons/fa'; // Import Pinterest icon
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
@@ -84,7 +84,7 @@ const TopBar = () => {
                   <FaTiktok className="text-black" />
                 </a>
                 <a href={socialMediaLinks.pinterest || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
-                  <FaPinterest className="text-red-600" /> {/* Pinterest Red */}
+                  <FaLinkedin className="text-red-600" /> {/* Pinterest Red */}
                 </a>
               </>
             )}

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { RxGlobe } from "react-icons/rx";
 import { MdKeyboardArrowDown, MdCopyright } from "react-icons/md";
-import { FaFacebook, FaEnvelope, FaTiktok, FaInstagram, FaTwitter, FaPinterest } from 'react-icons/fa';
+import { FaFacebook, FaEnvelope, FaTiktok, FaInstagram, FaTwitter, FaPinterest, FaLinkedin } from 'react-icons/fa';
 import Link from 'next/link';
 import axios from "axios";
 const Footer = () => {
@@ -178,7 +178,7 @@ useEffect(() => {
             <FaTiktok className={`h-8 w-8 ${socialMediaLinks.tiktok ? 'text-black hover:text-gray-800' : 'text-gray-400'}`} />
           </a>
           <a href={socialMediaLinks.pinterest || '#'} target="_blank" rel="noopener noreferrer" className="transition-transform transform hover:scale-110">
-            <FaPinterest className={`h-8 w-8 ${socialMediaLinks.pinterest ? 'text-red-600 hover:text-red-800' : 'text-gray-400'}`} />
+            <FaLinkedin className={`h-8 w-8 ${socialMediaLinks.pinterest ? 'text-red-600 hover:text-red-800' : 'text-gray-400'}`} />
           </a>
         </div>
       </div>
