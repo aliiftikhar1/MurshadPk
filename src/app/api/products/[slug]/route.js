@@ -13,6 +13,7 @@ export async function PUT(request, { params }) {
       subcategorySlug,
       colors,
       sizes,
+      status,
       discount,
       isTopRated = false,
       images, // Array of image filenames
@@ -43,6 +44,7 @@ export async function PUT(request, { params }) {
         stock: parseInt(stock, 10),
         subcategorySlug,
         colors: JSON.stringify(colors),
+        status,
         sizes: JSON.stringify(sizes),
         discount: discount ? parseFloat(discount) : null,
         isTopRated,
@@ -88,7 +90,7 @@ export async function GET(request, { params }) {
   try {
     // Fetch the product by slug
     const product = await prisma.product.findUnique({
-      where: { slug },
+      where: { slug, status: 'active', },
       include: {
         images: true, // Include related images
         subcategory: {
@@ -110,7 +112,7 @@ export async function GET(request, { params }) {
     const relatedProducts = await prisma.product.findMany({
       where: {
         subcategorySlug: product.subcategorySlug,
-        NOT: { slug: product.slug }, // Exclude the current product
+        NOT: { slug: product.slug,status: 'active', }, // Exclude the current product
       },
       take: 6, // Limit to 6 related products
       include: {

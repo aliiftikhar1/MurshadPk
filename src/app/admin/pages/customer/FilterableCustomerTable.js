@@ -180,9 +180,9 @@ const FilterableCustomerTable = ({ customers, fetchCustomers }) => {
           <div className="text-white text-xl">Loading...</div>
         </div>
       )}
-      <div className="bg-white shadow rounded-lg w-full relative">
+      <div className="bg-white shadow rounded-lg w-full relative px-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl pl-4 font-semibold pt-4 text-gray-800">Customers List</h2>
+          <h2 className="text-xl pl-3 font-semibold pt-4 text-gray-800">Customers List</h2>
           <div className="flex space-x-2">
             <button
               className="text-gray-600 hover:text-gray-900 focus:outline-none"

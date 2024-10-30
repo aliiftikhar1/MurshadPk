@@ -8,6 +8,7 @@ export async function GET() {
           id: true,
           name: true,
         },
+        where: { status: 'active', },
       });
       return NextResponse.json(products);
     } catch (error) {

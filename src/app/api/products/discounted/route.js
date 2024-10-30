@@ -9,7 +9,8 @@ export async function GET(request) {
             where: {
                 discount: {
                     gt: 0, // Fetch products with discount greater than 0
-                }
+                },
+                where: { status: 'active'},
             },
             include: {
                 images: true, // Include related images

@@ -73,7 +73,6 @@ model Color {
 }
 
 
-
 model Product {
   id              Int          @id @default(autoincrement())
   name            String
@@ -88,6 +87,7 @@ model Product {
   images          Image[]      // Relation to images
   colors          Json?        // Making colors optional
   sizes           Json?        // Making sizes optional
+  status          String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   orderItems      OrderItem[]

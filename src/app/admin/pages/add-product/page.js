@@ -21,8 +21,8 @@ const AddProductPageContent = () => {
     richDescription: '',
     price: '',
     stock: '',
-    categorySlug: '', // Use categorySlug
-    subcategorySlug: '', // Change from subcategoryId to subcategorySlug
+    categorySlug: '',
+    subcategorySlug: '',
     colors: [],
     sizes: [],
     image: [],
@@ -32,7 +32,9 @@ const AddProductPageContent = () => {
     meta_title: '',
     meta_description: '',
     meta_keywords: '',
+    status: 'active' // Default to 'show'
   });
+
 
   const [categories, setCategories] = useState([]); // Make sure it's an empty array
   const [filteredSubcategories, setFilteredSubcategories] = useState([]);
@@ -75,7 +77,7 @@ const AddProductPageContent = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch subcategories');
       }
-  
+
       const data = await response.json();
       console.log("Fetched subcategories:", data);
       setFilteredSubcategories(data?.data || []);
@@ -133,17 +135,17 @@ const AddProductPageContent = () => {
 
       const parsedColors = Array.isArray(data.colors)
         ? data.colors.map(color => ({
-            value: color.id,
-            label: `${color.name} (${color.hex})`,
-            hex: color.hex,
-          }))
+          value: color.id,
+          label: `${color.name} (${color.hex})`,
+          hex: color.hex,
+        }))
         : [];
 
       const parsedSizes = Array.isArray(data.sizes)
         ? data.sizes.map(size => ({
-            value: size.id,
-            label: size.name,
-          }))
+          value: size.id,
+          label: size.name,
+        }))
         : [];
 
       setNewProduct({
@@ -183,32 +185,32 @@ const AddProductPageContent = () => {
       { name: 'categorySlug', label: 'Category' },
       { name: 'subcategorySlug', label: 'Subcategory' },
     ];
-  
-    // Find missing fields
-   // Find missing fields
-const missingFields = requiredFields
-.filter(field => typeof newProduct[field.name] === 'string' && !newProduct[field.name].trim()) // Ensure it's a string before trimming
-.map(field => field.label);
 
-  
+    // Find missing fields
+    // Find missing fields
+    const missingFields = requiredFields
+      .filter(field => typeof newProduct[field.name] === 'string' && !newProduct[field.name].trim()) // Ensure it's a string before trimming
+      .map(field => field.label);
+
+
     if (missingFields.length > 0) {
       alert(`Please fill in the following fields: ${missingFields.join(', ')}`);
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     try {
       // Check for existing product with the same slug
       const existingProductResponse = await fetch(`/api/products?slug=${newProduct.slug}`);
       const existingData = await existingProductResponse.json();
-  
+
       if (existingData.status === false) {
         alert('Product with this slug already exists.');
         setIsLoading(false);
         return;
       }
-  
+
       // Upload new images if any
       const uploadedImages = await Promise.all(
         images.map(async (img) => {
@@ -230,10 +232,10 @@ const missingFields = requiredFields
           }
         })
       );
-  
+
       // Prepend the base URL to the image filenames when sending the product data
       const imageUrls = uploadedImages.map((filename) => `${filename}`);
-  
+
       const productToSubmit = {
         ...newProduct,
         description: newProduct.richDescription,
@@ -248,8 +250,10 @@ const missingFields = requiredFields
         meta_title: newProduct.meta_title,
         meta_description: newProduct.meta_description,
         meta_keywords: newProduct.meta_keywords,
+        status: newProduct.status // Include status
       };
-  
+
+
       const response = await fetch('/api/products', {
         method: 'POST',
         headers: {
@@ -257,7 +261,7 @@ const missingFields = requiredFields
         },
         body: JSON.stringify(productToSubmit),
       });
-  
+
       if (response.ok) {
         router.push('/admin/pages/Products');
       } else {
@@ -269,15 +273,15 @@ const missingFields = requiredFields
       console.error('Error adding item:', error);
       alert(`Error adding product: ${error.message}`);
     }
-  
+
     setIsLoading(false);
   };
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
   const roundToTwoDecimalPlaces = (num) => {
     return Math.round(num * 100) / 100;
@@ -369,20 +373,20 @@ const missingFields = requiredFields
             </div>
 
             <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    Slug
-  </label>
-  <input
-    type="text"
-    value={newProduct.slug}
-    onChange={(e) => {
-      const slugValue = e.target.value.replace(/\s+/g, '-'); // Replaces spaces with dashes
-      setNewProduct({ ...newProduct, slug: slugValue });
-    }}
-    className="mt-1 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-    placeholder="Enter product slug"
-  />
-</div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Slug
+              </label>
+              <input
+                type="text"
+                value={newProduct.slug}
+                onChange={(e) => {
+                  const slugValue = e.target.value.replace(/\s+/g, '-'); // Replaces spaces with dashes
+                  setNewProduct({ ...newProduct, slug: slugValue });
+                }}
+                className="mt-1 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter product slug"
+              />
+            </div>
 
 
             <div>
@@ -541,6 +545,20 @@ const missingFields = requiredFields
             placeholder="Enter meta keywords"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Status
+          </label>
+          <select
+            value={newProduct.status}
+            onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })}
+            className="mt-1 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="active">Active</option>
+            <option value="deactive">Deactive</option>
+          </select>
+        </div>
+
 
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-4">Upload Images</h3>

@@ -35,6 +35,8 @@ export async function GET(request, { params }) {
         Product.name LIKE ${`%${search}%`} 
       OR 
         Product.description LIKE ${`%${search}%`}
+        AND
+        Product.status = "active"
     `;
 
     return NextResponse.json({ data: products, status: true }, { status: 200 });

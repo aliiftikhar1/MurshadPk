@@ -40,7 +40,9 @@ const FilterableTable = ({
     meta_title: '',
     meta_description: '',
     meta_keywords: '',
+    status: 'active' // Default to 'active'
   });
+
 
   const [existingImages, setExistingImages] = useState([]);
   const fileInputRef = useRef(null);
@@ -67,6 +69,7 @@ const FilterableTable = ({
       setFilteredSubcategories([]);
     }
   }, [selectedCategory, subcategories]);
+
 
   const handleDeleteClick = (slug) => {
     setItemSlugToDelete(slug);
@@ -126,15 +129,14 @@ const FilterableTable = ({
       sizes: existingSizes,
       discount: item.discount || '',
       isTopRated: item.isTopRated || false,
-      images: [], // New images will be handled separately
+      images: [],
       meta_title: item.meta_title || '',
       meta_description: item.meta_description || '',
       meta_keywords: item.meta_keywords || '',
+      status: item.status || 'active' // Ensure status is included
     });
 
-    // Store relative paths
     const relativeImageURLs = item.images.map((img) => img.url);
-    console.log("Loaded existing images (relative paths):", relativeImageURLs);
     setExistingImages(relativeImageURLs);
   };
 
@@ -175,11 +177,9 @@ const FilterableTable = ({
     setIsLoading(true);
 
     try {
-      // Handle new image uploads using productForm.images
       const uploadedImages = await Promise.all(
         productForm.images.map(async (file) => {
           const imageBase64 = await convertToBase64(file);
-          console.log("Uploading image:", file.name); // Log image details
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_UPLOAD_IMAGE_API}`,
             {
@@ -192,10 +192,6 @@ const FilterableTable = ({
           );
           const result = await response.json();
           if (response.ok) {
-            console.log(
-              "Uploaded image URL:",
-              `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${result.image_url}`
-            );
             return result.image_url; // Return relative path
           } else {
             throw new Error(result.error || 'Failed to upload image');
@@ -204,16 +200,14 @@ const FilterableTable = ({
       );
 
       const stockValue = parseInt(productForm.stock, 10);
-
-      // Extract relative image paths from existingImages
-      const existingRelativeImages = existingImages; // These are already relative paths
+      const existingRelativeImages = existingImages;
 
       const productData = {
         ...productForm,
         stock: isNaN(stockValue) ? 0 : stockValue,
         images: [
-          ...existingRelativeImages, // Include existing images as relative paths
-          ...uploadedImages, // Include newly uploaded images as relative paths
+          ...existingRelativeImages,
+          ...uploadedImages,
         ],
         discount: productForm.discount ? productForm.discount : null,
         isTopRated: productForm.isTopRated,
@@ -222,10 +216,10 @@ const FilterableTable = ({
         meta_title: productForm.meta_title,
         meta_description: productForm.meta_description,
         meta_keywords: productForm.meta_keywords,
-        subcategorySlug: productForm.subcategorySlug, // Ensure subcategorySlug is included
+        subcategorySlug: productForm.subcategorySlug,
+        status: productForm.status // Ensure status is included
       };
-
-      console.log("Product data being sent to API:", productData);
+      console.log("Form data to submit : ", productData);
 
       const response = await fetch(`/api/products/${editProduct.slug}`, {
         method: 'PUT',
@@ -236,10 +230,8 @@ const FilterableTable = ({
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Update response from API:", data);
-        fetchProducts(); // Refresh the product list after updating
-        setEditProduct(null); // Clear the edit state
+        fetchProducts(); // Refresh product list after update
+        setEditProduct(null); // Clear edit state
         setProductForm({
           name: '',
           slug: '',
@@ -255,11 +247,10 @@ const FilterableTable = ({
           meta_title: '',
           meta_description: '',
           meta_keywords: '',
+          status: 'active' // Reset status after form submission
         });
-        setExistingImages([]); // Clear existing images after update
-        if (fileInputRef.current) {
-          fileInputRef.current.value = ''; // Clear file input
-        }
+        setExistingImages([]);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         const errorData = await response.json();
         console.error('Failed to update product:', errorData);
@@ -281,6 +272,7 @@ const FilterableTable = ({
       stock: '',
       subcategorySlug: '',
       colors: [],
+      status: '',
       sizes: [],
       discount: '',
       isTopRated: false,
@@ -393,101 +385,107 @@ const FilterableTable = ({
 
         {/* Products Table */}
         <div className="overflow-x-auto">
-  <table className="min-w-full divide-y divide-gray-200 w-full max-w-full">
-    <thead className="bg-gray-50">
-      <tr>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          ID
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Image
-        </th>
-        <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[300px]">
-          Slug
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Name
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[400px]">
-          Description
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Price
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Stock
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Updated At
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody className="bg-white divide-y divide-gray-200">
-      {Array.isArray(filteredData) &&
-        filteredData.map((item, index) => (
-          <tr
-            key={item.slug}
-            className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-          >
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {item.id}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {item.images && item.images.length > 0 ? (
-                <img
-                  src={item.images[0].url.startsWith('https://')
-                    ? item.images[0].url
-                    : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${item.images[0].url}`}
-                  alt="Product Image"
-                  className="w-16 h-16 object-cover"
-                />
-              ) : (
-                'N/A'
-              )}
-            </td>
-            <td className="px-2 py-4 whitespace-normal  text-sm font-medium text-gray-900 min-w-[300px] ">
-              {item.slug}
-            </td>
-            <td className="px-6 py-4 text-sm text-gray-500">
-              {item.name}
-            </td>
-            <td
-              className="px-6 py-4 text-sm text-gray-500 min-w-[500px] overflow-hidden text-ellipsis"
-              dangerouslySetInnerHTML={{
-                __html: item.description,
-              }}
-            ></td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {item.price}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {item.stock}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {new Date(item.updatedAt).toLocaleString()}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-              <button
-                onClick={() => handleEditItem(item)}
-                className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteClick(item.slug)}
-                className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-    </tbody>
-  </table>
-</div>
+          <table className="min-w-full divide-y divide-gray-200 w-full max-w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Image
+                </th>
+                <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[300px]">
+                  Slug
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[400px]">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Price
+                </th>
+                <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Stock
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Updated At
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {Array.isArray(filteredData) &&
+                filteredData.map((item, index) => (
+                  <tr
+                    key={item.slug}
+                    className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {item.id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {item.images && item.images.length > 0 ? (
+                        <img
+                          src={item.images[0].url.startsWith('https://')
+                            ? item.images[0].url
+                            : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${item.images[0].url}`}
+                          alt="Product Image"
+                          className="w-16 h-16 object-contain"
+                        />
+                      ) : (
+                        'N/A'
+                      )}
+                    </td>
+                    <td className="px-2 py-4 whitespace-normal  text-sm font-medium text-gray-900 min-w-[300px] ">
+                      {item.slug}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {item.name}
+                    </td>
+                    <td
+                      className="px-6 py-4 text-sm text-gray-500 min-w-[500px] overflow-hidden text-ellipsis"
+                      dangerouslySetInnerHTML={{
+                        __html: item.description,
+                      }}
+                    ></td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {item.price}
+                    </td>
+                    <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                      {item.status}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {item.stock}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(item.updatedAt).toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                      <button
+                        onClick={() => handleEditItem(item)}
+                        className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(item.slug)}
+                        className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
 
 
       </div>
@@ -624,6 +622,7 @@ const FilterableTable = ({
                     </option>
                   ))}
                 </select>
+
               </div>
 
               {/* Colors */}
@@ -744,6 +743,19 @@ const FilterableTable = ({
                   className="mt-1 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">Status</label>
+                <select
+                  name="status"
+                  value={productForm.status}
+                  onChange={handleFormChange}
+                  className="mt-1 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="active">Active</option>
+                  <option value="deactive">Deactive</option>
+                </select>
+              </div>
+
 
               {/* Image Upload */}
               <div className="mb-4">

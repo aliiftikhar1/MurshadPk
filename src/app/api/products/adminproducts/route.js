@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../util/prisma';
+import prisma from '../../../util/prisma';
 
 
 export async function POST(request) {
@@ -125,7 +125,6 @@ export async function POST(request) {
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
-      where: { status: 'active', },
       include: {
         images: true, // Include related images
       },

@@ -10,13 +10,17 @@ export async function GET(request, { params }) {
   }
 
   try {
-    // Fetch the subcategory using the slug
+    // Fetch the subcategory and only include associated products with status = 'active'
     const subcategory = await prisma.subcategory.findUnique({
       where: {
         slug: slug,
       },
       include: {
-        products: true, // Include associated products
+        products: {
+          where: {
+            status: 'active', // Filter for active products only
+          },
+        },
       },
     });
 

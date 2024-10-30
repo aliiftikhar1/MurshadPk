@@ -8,6 +8,7 @@ export async function GET() {
       orderBy: {
         createdAt: 'desc', // Order by creation date, most recent first
       },
+      where: { status: 'active'},
       take: 10, // Limit the results to 10 products
       include: {
         images: true, // Include related images

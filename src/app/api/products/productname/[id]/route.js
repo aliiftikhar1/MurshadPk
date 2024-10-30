@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   try {
     // Find the product by ID
     const product = await prisma.product.findUnique({
-      where: { id: parseInt(id) }, // Convert id to integer
+      where: { id: parseInt(id), status: 'active', },
       select: {
         name: true, // Select only the name field
       },

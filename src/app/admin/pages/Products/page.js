@@ -11,7 +11,7 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch('/api/products/adminproducts');
       const data = await response.json();
       setProducts(data);
     } catch (error) {
