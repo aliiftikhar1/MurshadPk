@@ -5,7 +5,7 @@ export async function GET(request) {
     const prisma = new PrismaClient();
     try {
         const topRatedProducts = await prisma.product.findMany({
-            where: { isTopRated: true , status: 'active' },
+            where: { isTopRated: true  },
             include: {
                 images: true, // Include related images
             },
