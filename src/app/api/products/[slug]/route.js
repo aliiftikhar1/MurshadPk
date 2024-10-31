@@ -83,10 +83,7 @@ export async function GET(request, { params }) {
     // Fetch the product by slug
     const product = await prisma.product.findUnique({
       where: {
-        AND: [
-          { slug: slug },
-          { status: 'active' },
-        ],
+        slug: slug , status: "active"
       },
       include: {
         images: true, // Include related images
