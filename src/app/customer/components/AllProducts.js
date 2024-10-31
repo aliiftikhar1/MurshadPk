@@ -16,16 +16,22 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products/topRated');
-        console.log("response is: ",response);
-        const fetchedProducts = response.data.data;
-        console.log("Top Rated Products are :",fetchedProducts);
+        const response = await fetch('/api/products/topRated');
+        if (!response.ok) {
+            throw new Error('Failed to fetch top-rated products');
+        }
+        
+        const data = await response.json();
+        console.log("response is:", data);
+        const fetchedProducts = data.data;
+        console.log("Top Rated Products are:", fetchedProducts);
+        
         setProducts(fetchedProducts);
         setLoading(false);
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching top-rated products:', error);
         setLoading(false);
-      }
+    }
     };
     fetchProducts();
   }, []);
