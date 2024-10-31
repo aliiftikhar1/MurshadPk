@@ -314,8 +314,8 @@ const FilterableTable = ({
     <div className=" bg-gray-100 min-h-screen">
       {/* Confirmation Popup */}
       {isPopupVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white  rounded-lg shadow-lg w-[99%] max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+          <div className="bg-white  rounded-lg shadow-lg w-[99%] max-w-md p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Are you sure?
             </h2>
