@@ -17,6 +17,7 @@ const TopRatedProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products/topRated');
+        console.log("response is: ",response.data.data);
         const fetchedProducts = response.data.data;
         console.log("Top Rated Products are :",fetchedProducts);
         setProducts(fetchedProducts);
