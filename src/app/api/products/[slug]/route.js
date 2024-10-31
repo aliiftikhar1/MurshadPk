@@ -151,7 +151,10 @@ export async function DELETE(request, { params }) {
       }, { status: 404 });
     }
 
+    // Delete related images first
     await prisma.image.deleteMany({ where: { productId: product.id } });
+
+    // Now delete the product
     await prisma.product.delete({ where: { slug } });
 
     return NextResponse.json({
@@ -169,8 +172,6 @@ export async function DELETE(request, { params }) {
     );
   }
 }
-
-
 
 // export const config = {
 //   api: {
