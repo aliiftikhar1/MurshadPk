@@ -3,18 +3,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
     try {
-        const topRatedProducts = await prisma.product.findMany({
-            where: { 
-                AND: [
-                    { isTopRated:  true },
-                    { status: 'active' },
-                  ],
-                },
-            include: {
-                images: true, // Include related images
-            },
-        });
-        
+        const topRatedProducts = await prisma.$queryRaw`
+            SELECT * FROM Product
+            WHERE isTopRated = true AND status = 'active';
+        `;
+
         // Log the top-rated products to the console
         console.log('Top Rated Products:', topRatedProducts);
 
