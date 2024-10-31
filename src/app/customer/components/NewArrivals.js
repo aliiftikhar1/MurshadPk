@@ -20,6 +20,8 @@ const NewArrivals = () => {
       try {
         const response = await axios.get('/api/products/newArrivals');
         setProducts(response.data.data);
+        const newarrival = response.data.data;
+        console.log("New Arrival Products are : ",newarrival);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching new arrivals:', error);
