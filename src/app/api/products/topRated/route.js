@@ -1,7 +1,8 @@
-import prisma from "../../../util/prisma";
+// import prisma from "../../../util/prisma";
 import { NextResponse } from 'next/server';
-
+import { PrismaClient } from "@prisma/client";
 export async function GET(request) {
+    const prisma = new PrismaClient();
     try {
         const topRatedProducts = await prisma.product.findMany({
             where: { isTopRated:'1' , status: 'active' },
