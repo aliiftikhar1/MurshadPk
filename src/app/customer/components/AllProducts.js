@@ -17,9 +17,7 @@ const TopRatedProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('/api/products/topRated');
-        console.log("response is: ",response);
         const fetchedProducts = response.data.data;
-        console.log("Top Rated Products are :",fetchedProducts);
         setProducts(fetchedProducts);
         setLoading(false);
       } catch (error) {
@@ -87,16 +85,14 @@ const TopRatedProducts = () => {
               )}
               <div className="relative">
                 {product.images && product.images.length > 0 ? (
-                  <div className='h-[240px] md:h-[220px] overflow-hidden'>
                   <motion.img
-                  src={`${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${product.images[0].url}`}
+                    src={`${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${product.images[0].url}`}
                     alt={product.name}
-                    className="h-[240px md:h-[220px] w-full object-cover mb-4 rounded bg-white "
+                    className="h-[240px] w-full object-contain mb-4 rounded bg-white"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.3 }}
                     onClick={() => handleProductClick(product.slug)}
                   />
-                  </div>
                 ) : (
                   <div
                     className="h-[240px] w-full bg-gray-200 mb-4 rounded flex items-center justify-center text-gray-500"
