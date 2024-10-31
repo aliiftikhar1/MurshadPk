@@ -4,7 +4,12 @@ import { NextResponse } from 'next/server';
 export async function GET(request) {
     try {
         const topRatedProducts = await prisma.product.findMany({
-            where: { isTopRated: true, status: 'active', },
+            where: { 
+                AND: [
+                    { isTopRated:  true },
+                    { status: 'active' },
+                  ],
+                },
             include: {
                 images: true, // Include related images
             },

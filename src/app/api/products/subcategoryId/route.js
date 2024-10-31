@@ -36,8 +36,10 @@ export async function GET(request) {
   
       const products = await prisma.product.findMany({
         where: {
-          subcategoryId: parseInt(subcategoryId, 10),
-           status: 'active',
+          AND: [
+            { subcategoryId:  parseInt(subcategoryId, 10) },
+            { status: 'active' },
+          ],
         },
         include: {
           images: true, // Include related images
