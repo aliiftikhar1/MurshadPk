@@ -16,7 +16,7 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products/topRated');
+        const response = await axios.get('/api/products/topRated');
         console.log("response is: ",response);
         const fetchedProducts = response.data.data;
         console.log("Top Rated Products are :",fetchedProducts);

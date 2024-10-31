@@ -26,7 +26,7 @@ export async function GET(request) {
 //     try {
 //         const topRatedProducts = await prisma.$queryRaw`
 //             SELECT * FROM Product
-//             WHERE isTopRated = true AND status = 'active';
+//             WHERE isTopRated = true ;
 //         `;
 
 //         // Log the top-rated products to the console
