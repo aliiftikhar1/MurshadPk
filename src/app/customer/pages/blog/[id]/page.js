@@ -3,7 +3,9 @@ import BlogDetailPage from "./mainpage"; // Ensure you are importing the correct
 
 export async function generateMetadata({ params }) {
   // const baseUrl = 'http://solveandwins.com';
-  const baseUrl = 'http://localhost:3000';
+  // const baseUrl = 'http://localhost:3000';
+  const baseUrl = 'https://www.murshadpk.com';
+  
   try {
     const res = await fetch(`${baseUrl}/api/blog/${params.id}`);
     
