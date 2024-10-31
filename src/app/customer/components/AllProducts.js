@@ -18,7 +18,7 @@ const TopRatedProducts = () => {
       try {
         const response = await axios.get('/api/products/topRated');
         const fetchedProducts = response.data.data;
-        console.log("Top Rated Products are :",fetchProducts);
+        console.log("Top Rated Products are :",fetchedProducts);
         setProducts(fetchedProducts);
         setLoading(false);
       } catch (error) {
