@@ -32,12 +32,13 @@ export async function GET(request, { params }) {
       FROM 
         Product 
       WHERE 
-        Product.name LIKE ${`%${search}%`} 
-      OR 
-        Product.description LIKE ${`%${search}%`}
+        (Product.name LIKE ${`%${search}%`} 
+        OR 
+        Product.description LIKE ${`%${search}%`})
         AND
         Product.status = "active"
     `;
+
 
     return NextResponse.json({ data: products, status: true }, { status: 200 });
   } catch (error) {
