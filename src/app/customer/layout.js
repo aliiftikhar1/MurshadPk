@@ -48,7 +48,7 @@ const CustomerLayout = ({ children }) => {
           setcompanyName(data.name);
           setcompanyHeaderImage(data.headerImage);
           setcompanyicon(data.favIcon);
-          console.log("Company data is ",company);
+          // console.log("Company data is ",company);
          
         }
       } catch (error) {
