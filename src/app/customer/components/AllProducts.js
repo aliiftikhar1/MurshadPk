@@ -16,7 +16,7 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products/topRated', {
+        const response = await axios.get('https://murshadpk.com/api/products/topRated', {
           headers: {
             'Cache-Control': 'no-cache', // Tells the browser not to cache the response
             'Pragma': 'no-cache', // HTTP 1.0 version of 'no-cache'
@@ -24,6 +24,7 @@ const TopRatedProducts = () => {
         });
         const fetchedProducts = response.data.data;
         setProducts(fetchedProducts);
+        console.log("Fetched Product for browser are: ",fetchedProducts);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching top-rated products:', error);
