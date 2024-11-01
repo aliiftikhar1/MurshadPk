@@ -22,6 +22,7 @@ const TopRatedProducts = () => {
             'Pragma': 'no-cache', // HTTP 1.0 version of 'no-cache'
           }
         });
+        console.log("The Response is : ",response);
         const fetchedProducts = response.data.data;
         setProducts(fetchedProducts);
         console.log("Fetched Product for browser are: ",fetchedProducts);
