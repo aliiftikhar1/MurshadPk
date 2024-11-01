@@ -13,7 +13,7 @@ export async function GET(request) {
         // Log the top-rated products to the console
         console.log('Top Rated Products:', topRatedProducts);
 
-        return NextResponse.json({ data: topRatedProducts, status: true }, { status: 200 });
+        return NextResponse.json(topRatedProducts , { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: 'Failed to fetch top-rated products', error: error.message, status: false }, { status: 500 });
     }

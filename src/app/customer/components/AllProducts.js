@@ -16,14 +16,11 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products/topRated', {
-          headers: {
-            'Cache-Control': 'no-cache', // Tells the browser not to cache the response
-            'Pragma': 'no-cache', // HTTP 1.0 version of 'no-cache'
-          }
-        });
+        const response = await fetch('/api/products/topRated');
+        const data = await response.json();
+        console.log("Fetched data:", data);
         console.log("The Response is : ",response);
-        const fetchedProducts = response.data.data;
+        const fetchedProducts = data;
         setProducts(fetchedProducts);
         console.log("Fetched Product for browser are: ",fetchedProducts);
         setLoading(false);
