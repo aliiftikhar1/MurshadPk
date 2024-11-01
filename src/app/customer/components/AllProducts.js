@@ -16,11 +16,11 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products/topRated');
+        const response = await fetch('https://murshadpk.pkstockhelper.info/api/getTopRatedProducts.php');
         const data = await response.json();
-        console.log("Fetched data:", data);
+        console.log("Fetched data:", data.data);
         console.log("The Response is : ",response);
-        const fetchedProducts = data;
+        const fetchedProducts = data.data;
         setProducts(fetchedProducts);
         console.log("Fetched Product for browser are: ",fetchedProducts);
         setLoading(false);
