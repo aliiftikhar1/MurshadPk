@@ -18,7 +18,7 @@ const NewArrivals = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products/newArrivals');
+        const response = await axios.get('https://murshadpk.pkstockhelper.info/api/getNewArrivalProducts.php');
         setProducts(response.data.data);
         const newarrival = response.data.data;
         console.log("New Arrival Products are : ",newarrival);
