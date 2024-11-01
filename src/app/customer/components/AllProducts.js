@@ -16,7 +16,7 @@ const TopRatedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://murshadpk.com/api/products/topRated', {
+        const response = await axios.get('https://www.murshadpk.com/api/products/topRated', {
           headers: {
             'Cache-Control': 'no-cache', // Tells the browser not to cache the response
             'Pragma': 'no-cache', // HTTP 1.0 version of 'no-cache'
