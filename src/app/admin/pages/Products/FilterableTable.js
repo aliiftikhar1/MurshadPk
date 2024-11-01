@@ -453,7 +453,7 @@ const FilterableTable = ({
                       {item.name}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
-                      {item.isTopRated}
+                      {item.isTopRated ? (<> Yes </>):(<>No</>) } 
                     </td>
                     <td
                       className="px-6 py-4 text-sm text-gray-500 min-w-[500px] overflow-hidden text-ellipsis"
